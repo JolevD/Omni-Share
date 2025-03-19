@@ -1,0 +1,3 @@
+1st - helmet middleware for better security 
+
+2nd - updating cors middleware 

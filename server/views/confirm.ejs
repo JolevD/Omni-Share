@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Confirm File Receipt</title>
+  </head>
+  <body>
+    <h1>Confirm to Receive the File</h1>
+    <p>File: <%= fileName %></p>
+    <button id="confirmButton">Confirm and Download</button>
+    <script nonce="<%= nonce %>">
+      console.log("Script loaded");
+      const fileName = "<%= fileName %>";
+      document
+        .getElementById("confirmButton")
+        .addEventListener("click", async () => {
+          try {
+            // First, confirm the file transfer with the server.
+            const confirmResponse = await fetch("/api/confirm", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+            });
+            const confirmResult = await confirmResponse.json();
+            alert(confirmResult.message);
+
+            // Now fetch the file as a blob
+            const streamResponse = await fetch(
+              "/api/stream?file=" + encodeURIComponent(fileName)
+            );
+            if (!streamResponse.ok) {
+              throw new Error("Failed to download the file.");
+            }
+            const blob = await streamResponse.blob();
+
+            // Create a temporary link to trigger the file download
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = downloadUrl;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+
+            // Cleanup
+            window.URL.revokeObjectURL(downloadUrl);
+            alert("File transferred successfully!");
+          } catch (error) {
+            alert("Error during file transfer: " + error.message);
+            console.error(error);
+          }
+        });
+    </script>
+  </body>
+</html>
