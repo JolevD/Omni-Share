@@ -65,12 +65,15 @@ Omni Share provides a simple and secure way to share files remotely. A sender se
    npm install express cors ngrok qrcode helmet ejs
    ```
 2. **Configure ngrok:**
-
    - Create or update ngrok.yml in the server folder with:
-
-   version: "2"
+     version: "2"
+   ```
    authtoken: "YOUR_NGROK_AUTHTOKEN" # Replace with your token (optional but recommended)
+   ```
    region: "us"
+   ```
+
+   ```
 
 ## Security Considerations
 
@@ -80,3 +83,7 @@ Omni Share provides a simple and secure way to share files remotely. A sender se
   - Ngrok is used to create a secure, temporary tunnel, with sessions timing out after 5 minutes if not confirmed.
     **Input Validation:**
   - The backend validates file paths and file existence before sharing to minimize security risks.
+
+```
+
+```
