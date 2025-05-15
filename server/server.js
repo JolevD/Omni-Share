@@ -7,6 +7,9 @@ import { fileURLToPath } from 'url';
 import ngrok from 'ngrok';
 import helmet from "helmet"
 import crypto from 'crypto';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express()
 app.use((req, res, next) => {
@@ -83,6 +86,7 @@ app.post("/api/start", async (req, res) => {
         // creating tunnel for generating public url and qrcode
         const tunnelUrl = await ngrok.connect({
             addr: PORT,
+            authtoken: process.env.NGROK_AUTH_TOKEN,
             configPath: path.join(__dirname, 'ngrok.yml')
         });
 
